@@ -17,18 +17,14 @@ def nova_empresa(request):
         caracteristicas=request.POST.get('caractetisticas')
         tecnologias=request.POST.getlist('tecnologias')
         logo=request.FILES.get('logo')
-        
-        if (len(nome.strip()) == 0 or len(email.strip()) == 0 or len(cidade.strip()) == 0 or len(endereco.strip()) == 0 or len(nicho.strip()) == 0 or len(caracteristicas.strip()) == 0 or (not logo)): 
-            messages.add_message(request, constants.ERROR, 'Preencha todos os campos')
-            return redirect('nova_empresa')
 
         if logo.size > 100_000_000:
             messages.add_message(request, constants.ERROR, 'A logo da empresa deve ter menos de 10MB')
-            return redirect('nova_empresa')
+            return redirect('/nova_empresa')
 
         if nicho not in [i[0] for i in models.CHOICES_NICHO]:
             messages.add_message(request, constants.ERROR, 'Nicho de mercado inválido')
-            return redirect('nova_empresa')
+            return redirect('/nova_empresa')
         
         empresa = Empresa(
             logo=logo,
@@ -36,30 +32,31 @@ def nova_empresa(request):
             email=email,
             cidade=cidade,
             endereco=endereco,
-            nicho_mercado=nicho,
-            caracteristica_empresa=caracteristicas
+            nicho=nicho,
+            caracteristicas=caracteristicas
         )
         empresa.save()
         empresa.tecnologias.add(*tecnologias)
         empresa.save()
         messages.add_message(request, constants.SUCCESS, 'Empresa cadastrada com sucesso')
         
-        return redirect('nova_empresa')
+        return redirect('/empresas')
     context={
-        'tecs':tecs,
-    }
-    return render(request,'nova_empresa',context=context)
+            'tecs':tecs
+        }
+    return render(request,'nova_empresa.html',context=context)
 
 def empresas(request):
     empresas=Empresa.objects.all()
     context={
         'empresas':empresas,
-       
     }
-    return render(request,'empresas',context=context)
+    
+    return render(request,'empresas.html',context=context)
 
 def excluir_empresa(request, id):
     empresa = Empresa.objects.get(id=id)
     empresa.delete()
     messages.add_message(request, constants.SUCCESS, 'Empresa excluída com sucesso')
-    return redirect('empresas')
+    
+    return redirect('/empresas')
