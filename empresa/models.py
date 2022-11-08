@@ -35,7 +35,7 @@ class Empresa(models.Model):
     tecnologias=models.ManyToManyField(Tecnologia)
     cidade=models.CharField(max_length=100,null=False,blank=False)
     endereco=models.CharField(max_length=100,null=False,blank=False)
-    caractetistica=models.TextField()
+    caracteristica=models.TextField()
     nicho=models.CharField(max_length=3,choices=CHOICES_NICHO,null=False,blank=False)
     
     def __str__(self):
@@ -43,7 +43,7 @@ class Empresa(models.Model):
 
 class Vaga(models.Model):
     
-    empresa = models.ForeignKey(Empresa, on_delete=models.DO_NOTHING)
+    empresa = models.ForeignKey(Empresa,null=True, on_delete=models.SET_NULL)
     titulo = models.CharField(max_length=30)
     nivel_experiencia = models.CharField(max_length=2, choices=CHOICES_EXPERIENCIA)
     data_final = models.DateField()
