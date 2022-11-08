@@ -20,15 +20,15 @@ def nova_empresa(request):
         
         if (len(nome.strip()) == 0 or len(email.strip()) == 0 or len(cidade.strip()) == 0 or len(endereco.strip()) == 0 or len(nicho.strip()) == 0 or len(caracteristicas.strip()) == 0 or (not logo)): 
             messages.add_message(request, constants.ERROR, 'Preencha todos os campos')
-            return redirect('/home/nova_empresa')
+            return redirect('nova_empresa')
 
         if logo.size > 100_000_000:
             messages.add_message(request, constants.ERROR, 'A logo da empresa deve ter menos de 10MB')
-            return redirect('/home/nova_empresa')
+            return redirect('nova_empresa')
 
         if nicho not in [i[0] for i in Empresa.CHOICES_NICHO]:
             messages.add_message(request, constants.ERROR, 'Nicho de mercado inválido')
-            return redirect('/home/nova_empresa')
+            return redirect('nova_empresa')
         
         empresa = Empresa(
             logo=logo,
@@ -44,17 +44,21 @@ def nova_empresa(request):
         empresa.save()
         messages.add_message(request, constants.SUCCESS, 'Empresa cadastrada com sucesso')
         
-        return redirect('/home/empresas')
+        return redirect('nova_empresa')
     context={
             'tecs':tecs
         }
-    return render(request,'nova_empresa.html',context=context)
+    return render(request,'nova_empresa',context=context)
 
 def empresas(request):
     empresas=Empresa.objects.all()
-    tecs=Tecnologia.objects.all()
     context={
         'empresas':empresas,
-        'tecs':tecs
+       
     }
-    return render(request,'empresas.html',context=context)
+    return render(request,'empresas',context=context)
+
+def excluir_empresa(request,id):
+    empresa=Empresa.objects.get(id=id)
+    empresa.delete()
+    return redirect('empresas')
