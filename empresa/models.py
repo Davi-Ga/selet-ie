@@ -7,6 +7,7 @@ CHOICES_NICHO=(
     ('T','Tecnologia'),
     ('P','Psicologia')
 )
+
 CHOICES_EXPERIENCIA = (
     ('J', 'Júnior'),
     ('P', 'Pleno'),
