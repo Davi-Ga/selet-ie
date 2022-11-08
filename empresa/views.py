@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from .models import Tecnologia,Empresa
 from django.contrib import messages
 from django.contrib.messages import constants
-
+from . import models
 
 def nova_empresa(request):
     if request.method=='GET':
@@ -26,7 +26,7 @@ def nova_empresa(request):
             messages.add_message(request, constants.ERROR, 'A logo da empresa deve ter menos de 10MB')
             return redirect('nova_empresa')
 
-        if nicho not in [i[0] for i in Empresa.CHOICES_NICHO]:
+        if nicho not in [i[0] for i in models.CHOICES_NICHO]:
             messages.add_message(request, constants.ERROR, 'Nicho de mercado inválido')
             return redirect('nova_empresa')
         
@@ -46,8 +46,8 @@ def nova_empresa(request):
         
         return redirect('nova_empresa')
     context={
-            'tecs':tecs
-        }
+        'tecs':tecs,
+    }
     return render(request,'nova_empresa',context=context)
 
 def empresas(request):
@@ -58,7 +58,8 @@ def empresas(request):
     }
     return render(request,'empresas',context=context)
 
-def excluir_empresa(request,id):
-    empresa=Empresa.objects.get(id=id)
+def excluir_empresa(request, id):
+    empresa = Empresa.objects.get(id=id)
     empresa.delete()
+    messages.add_message(request, constants.SUCCESS, 'Empresa excluída com sucesso')
     return redirect('empresas')
