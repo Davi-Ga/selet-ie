@@ -70,7 +70,7 @@
                             <label>Tecnologias usadas:</label>
                             <select class="form-control" name="tecnologias" multiple>  
                                 {% for tec in tecs %}
-                                    <option value="">{{tec}}</option>
+                                    <option value={{tec.id}}>{{tec}}</option>
                                  {% endfor %}                              
                             </select>
                         </div>
