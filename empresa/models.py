@@ -35,7 +35,7 @@ class Empresa(models.Model):
     tecnologias=models.ManyToManyField(Tecnologia)
     cidade=models.CharField(max_length=100,null=False,blank=False)
     endereco=models.CharField(max_length=100,null=False,blank=False)
-    caracteristica=models.TextField()
+    caracteristicas=models.TextField(null=True)
     nicho=models.CharField(max_length=3,choices=CHOICES_NICHO,null=False,blank=False)
     
     def __str__(self):
