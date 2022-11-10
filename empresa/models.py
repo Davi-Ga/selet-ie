@@ -48,6 +48,7 @@ class Vaga(models.Model):
     
     empresa = models.ForeignKey(Empresa,null=True, on_delete=models.SET_NULL)
     titulo = models.CharField(max_length=30)
+    email=models.EmailField(null=False,blank=False)
     nivel_experiencia = models.CharField(max_length=2, choices=CHOICES_EXPERIENCIA)
     data_final = models.DateField()
     status = models.CharField(max_length=30, choices=CHOICES_STATUS)
