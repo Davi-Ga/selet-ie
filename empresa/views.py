@@ -18,10 +18,6 @@ def nova_empresa(request):
         tecnologias=request.POST.getlist('tecnologias')
         logo=request.FILES.get('logo')
 
-        if logo.size > 100_000_000:
-            messages.add_message(request, constants.ERROR, 'A logo da empresa deve ter menos de 10MB')
-            return redirect('/nova_empresa')
-
         if nicho not in [i[0] for i in models.CHOICES_NICHO]:
             messages.add_message(request, constants.ERROR, 'Nicho de mercado inválido')
             return redirect('/nova_empresa')
@@ -33,7 +29,7 @@ def nova_empresa(request):
             cidade=cidade,
             endereco=endereco,
             nicho=nicho,
-            caracteristicas=caracteristicas
+            caracteristicas=caracteristicas,
         )
         empresa.save()
         empresa.tecnologias.add(*tecnologias)
@@ -48,7 +44,16 @@ def nova_empresa(request):
     return render(request,'nova_empresa.html',context=context)
 
 def empresas(request):
+    tecnologias_filtrar=request.GET.get('tecnologias')  
+    nome_filtrar=request.GET.get('nome')    
     empresas=Empresa.objects.all()
+    
+    if tecnologias_filtrar:
+        empresas=empresas.filter(tecnologias=tecnologias_filtrar)
+    
+    if nome_filtrar:
+        empresas=empresas.filter(nome__icontains=nome_filtrar)
+    
     tecnologias=Tecnologia.objects.all()
     context={
         'empresas':empresas,
