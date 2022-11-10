@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse
 from .models import Tecnologia,Empresa
 from django.contrib import messages
@@ -61,6 +61,17 @@ def empresas(request):
     }
     
     return render(request,'empresas.html',context=context)
+
+def empresa(request,id):
+    empresa=get_object_or_404(Empresa,id=id)
+    tecnologias=Tecnologia.objects.all()
+    empresas=Empresa.objects.all()
+    context={
+        'empresa':empresa,
+        'tecnologias':tecnologias,
+        'empresas':empresas
+    }
+    return render(request,'empresa.html',context=context)
 
 def excluir_empresa(request, id):
     empresa = Empresa.objects.get(id=id)
