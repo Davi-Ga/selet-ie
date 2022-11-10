@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse
-from .models import Tecnologia,Empresa
+from .models import Tecnologia,Empresa,Vaga
 from django.contrib import messages
 from django.contrib.messages import constants
 from . import models
@@ -66,10 +66,12 @@ def empresa(request,id):
     empresa=get_object_or_404(Empresa,id=id)
     tecnologias=Tecnologia.objects.all()
     empresas=Empresa.objects.all()
+    vagas=Vaga.objects.filter(empresa_id=id)
     context={
         'empresa':empresa,
         'tecnologias':tecnologias,
-        'empresas':empresas
+        'empresas':empresas,
+        'vagas':vagas
     }
     return render(request,'empresa.html',context=context)
 
