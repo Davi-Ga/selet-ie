@@ -42,3 +42,5 @@ def nova_vaga(request):
         raise Http404()
     
     return render(request, 'vaga/nova_vaga.html')
+
+def vaga(request,id):
