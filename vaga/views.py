@@ -44,3 +44,9 @@ def nova_vaga(request):
     return render(request, 'vaga/nova_vaga.html')
 
 def vaga(request,id):
+    vaga=get_object_or_404(Vaga,id=id)
+    
+    context={
+        'vaga':vaga
+    }
+    return render(request,'vaga.html',context=context)
