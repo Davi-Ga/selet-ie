@@ -6,5 +6,4 @@ urlpatterns = [
     path('empresas/',views.empresas, name='empresas'),
     path('empresa/<int:id>',views.empresa, name='empresa'),
     path('excluir_empresa/<int:id>/',views.excluir_empresa, name='excluir_empresa'),
-    path('nova_tarefa/<int:id_vaga',views.nova_tarefa, name='nova_tarefa'),
 ]
