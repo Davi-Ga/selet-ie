@@ -4,6 +4,7 @@ from empresa.models import Vaga
 from django.contrib import messages
 from django.contrib.messages import constants
 from django.shortcuts import render,redirect,get_object_or_404
+from models import Tarefa
 
 def nova_vaga(request):
     if request.method=='POST':
@@ -50,3 +51,16 @@ def vaga(request,id):
         'vaga':vaga
     }
     return render(request,'vaga.html',context=context)
+
+def nova_tarefa(request,id_vaga):
+    titulo = request.POST.get('titulo')
+    prioridade = request.POST.get("prioridade")
+    data = request.POST.get('data')
+    
+    tarefa = Tarefa(vaga_id=id_vaga,
+                    titulo=titulo,
+                    prioridade=prioridade,
+                    data=data)
+    tarefa.save()
+    messages.add_message(request, constants.SUCCESS, 'Tarefa criada com sucesso')
+    return redirect(f'/vagas/vaga/{id_vaga}')
