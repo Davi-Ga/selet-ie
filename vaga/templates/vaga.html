@@ -115,21 +115,22 @@
             <div class="row"> 
                 <h3 class="titulo">Histórico de e-mails</h3>
                 
-                    <div class="col-md">
-
-                        <div class="box-email">
-                            <div class="header-email">
-                                Assunto
+                    {% for email in emails%}
+                        <div class="col-md">
+                    
+                            <div class="box-email">
+                                <div class="header-email">
+                                    {{email.assunto}}
+                                </div>
+                    
+                                <div class="body-email">
+                                    {{email.corpo}}
+                                </div>
+                                
                             </div>
-
-                            <div class="body-email">
-                                Corpo do email
-                            </div>
-                            
+                    
                         </div>
-            
-                    </div>
-                
+                    {% endfor %}
                 
                   
             </div> 
