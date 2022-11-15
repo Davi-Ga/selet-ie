@@ -50,10 +50,12 @@ def nova_vaga(request):
 
 def vaga(request,id):
     vaga=get_object_or_404(Vaga,id=id)
+    emails = Emails.objects.filter(vaga=vaga)
     tarefa = Tarefa.objects.filter(vaga=vaga).filter(realizada=False)
     context={
         'vaga':vaga,
         'tarefa':tarefa,
+        'emails':emails
     }
     return render(request,'vaga.html',context=context)
 
