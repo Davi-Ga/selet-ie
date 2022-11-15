@@ -4,11 +4,11 @@ from empresa.models import Vaga
 from django.contrib import messages
 from django.contrib.messages import constants
 from django.shortcuts import render,redirect,get_object_or_404
-from .models import Tarefa
+from .models import Tarefa,Emails
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core.mail import EmailMultiAlternatives
-from seletie import settings
+from django.conf import settings
 
 def nova_vaga(request):
     if request.method=='POST':
@@ -72,7 +72,7 @@ def nova_tarefa(request,id_vaga):
         return redirect(f'/vaga/{id_vaga}')
         
     except:
-        messages.add_message(request, constants.SUCCESS, 'Tarefa criada com sucesso')
+        messages.add_message(request, constants.ERROR, 'Falha ao criar a tarefa')
         return redirect(f'/vaga/{id_vaga}')
 
 def realizar_tarefa(request, id):
@@ -99,9 +99,23 @@ def envia_email(request, id_vaga):
     text_content = strip_tags(html_content)
     email = EmailMultiAlternatives(assunto, text_content, settings.EMAIL_HOST_USER, [vaga.email,])
     email.attach_alternative(html_content, "text/html")
-    if email.send():  
+    if email.send():
+        mail = Emails(
+            vaga=vaga,
+            assunto=assunto,
+            corpo=corpo,
+            enviado=True
+        )
+        mail.save()
         messages.add_message(request, constants.SUCCESS, 'Email enviado com sucesso.')
         return redirect(f'/vagas/vaga/{id_vaga}')
     else:
+        mail = Emails(
+            vaga=vaga,
+            assunto=assunto,
+            corpo=corpo,
+            enviado=False 
+        )
+        mail.save()
         messages.add_message(request, constants.ERROR, 'Erro interno do sistema!')
         return redirect(f'/vagas/vaga/{id_vaga}')
