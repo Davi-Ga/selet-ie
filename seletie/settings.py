@@ -133,6 +133,11 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# Email
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST_USER = "davigaldinoky@gmail.com"
+
 MESSAGE_TAGS = {
     constants.DEBUG: 'alert-primary',
     constants.INFO: 'alert-info',
