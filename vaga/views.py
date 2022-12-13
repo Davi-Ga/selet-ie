@@ -65,6 +65,7 @@ def nova_tarefa(request,id_vaga):
         prioridade = request.POST.get("prioridade")
         data = request.POST.get('data')
         
+        
         tarefa = Tarefa(vaga_id=id_vaga,
                         titulo=titulo,
                         prioridade=prioridade,
